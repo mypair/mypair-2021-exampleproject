@@ -30,3 +30,13 @@ t10_noDuplicate <- top10 %>%
   mutate(isDuplicate = dup) %>% 
   filter(isDuplicate == FALSE) %>%
   select(-isDuplicate)
+
+#convert data
+t10_conversions <- t10_noDuplicate %>% 
+  mutate_if(is.character, as.factor) %>%
+  mutate(X1 = as.factor(X1),
+         year = as.factor(year)) %>%
+  rename(genre = `top genre`) %>%
+  remove_rownames() %>%
+  unite(genre_id, c("genre", "X1"), remove = FALSE) %>% 
+  column_to_rownames("genre_id")
